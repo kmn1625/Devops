@@ -1,0 +1,504 @@
+----------------------------------------------------------------------------------------------------
+LINUX
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+17-01-2022 Class - 1
+----------------------------------------------------------------------------------------------------
+Step 1: Create AWS Account
+
+Step 2: Create Redhat Linux Server (t2.micro)
+
+Search for EC2 in the AWS console
+Goto Instances on the left and select Launch Instances
+
+Select Redhat Linux 8 flavor of Linux
+Select t2.micro in Instance Type
+
+Configure Security Groups
+Type - All Traffic
+Source - Anywhere
+
+Key Pair
+
+Select create a new key Pair, give a name and download the pem file
+----------------------------------------------------------------------------------------------------
+Step 3: Download and install Putty
+
+Step 4: Open Puttygen and ceate a ppk file (converting pem file to ppk)
+
+Puttygen --> Load --> Select the .pem file (All files) --> Save Private Key (ppk)
+
+Step 5: Connect to the Linux Server
+
+Open Putty
+
+Copy the public ipv4 address from AWS and paste it in Host Name
+
+Under Connection --> SSH --> Auth --> Select the ppk file that was generated using Puttygen
+
+Login As: ec2-user (Default Username for Redhat Machine)
+----------------------------------------------------------------------------------------------------
+Linux Commands:
+----------------------------------------------------------------------------------------------------
+mkdir <directory_name> --> To create a directory_name
+touch <file_name> --> To create a file
+----------------------------------------------------------------------------------------------------
+ls --> To list the files and directories
+ls -l --> To list the files and directories in long format
+ls -lt --> To list the files in long format sorted with time
+ls -lrt --> To list the files in long format sorted with time in reverse order
+----------------------------------------------------------------------------------------------------
+cd <directory_name> --> To change a directory
+cd .. --> To go back to a previous directory
+cd --> To goto home directory (/home/ec2-user)
+----------------------------------------------------------------------------------------------------
+pwd --> To check the present working directory
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+18-01-2022 Class - 2
+----------------------------------------------------------------------------------------------------
+VI - Text Editor
+
+vi <file_name> --> To open the file for edit
+
+Note: By default VI editor opens in command mode
+
+esc --> To go back to command mode
+esc + i --> To enter Insert mode in VI
+
+esc + :w --> To save the file
+esc + :wq --> to save the file and quit
+esc + :wq! --> To save the file and quit
+esc + :q! --> To quit without saving the file
+
+w --> write
+q --> quit
+! --> Forcefully
+----------------------------------------------------------------------------------------------------
+esc + :set nu --> TO set the numbers for the file
+esc + :set nonu --> To remove the numbers
+----------------------------------------------------------------------------------------------------
+cat <file_name> --> To check the contents of the file
+----------------------------------------------------------------------------------------------------
+Assignment: How to display the contents of the file in the reverse order
+----------------------------------------------------------------------------------------------------
+Find and Replace strings
+
+esc+ :%s/<old_string>/<new_string>/g
+
+% --> All lines
+s --> Substitute
+g --> globally (All occurences of the pattern)
+ig --> Case insensitive replace
+
+esc + :1s/<old_string>/<new_string>/g --> To replace only in the first line
+esc + :1,4s/<old_string>/<new_string>/g --> To replace from lines 1 to 4
+esc + :4,$s/<old_string>/<new_string>/g --> To replace from line 4 to end of the file
+----------------------------------------------------------------------------------------------------
+esc + dd --> To delete a line in VI
+
+esc + /pattern
+----------------------------------------------------------------------------------------------------
+esc + :undo
+esc + :redo
+----------------------------------------------------------------------------------------------------
+Remove the files
+
+rm <file_name> --> To delete a file
+rm -rf <directory_name> --> To delete a directory
+rm -rf * --> Remove all the file and directories in that particular folder
+----------------------------------------------------------------------------------------------------
+Copy the files
+
+cp <file_name_1> <file_name_2> --> to copy a file
+cp <file_name_1> <dir>/<file_name_2> --> To copy a file to a directory
+cp -R <dir_1> <dir_2> --> To copy a directory
+----------------------------------------------------------------------------------------------------
+Move the files
+
+mv <file_name_1> <file_name_2> --> to move a file
+mv <file_name_1> <dir>/<file_name_2> --> To move a file to a directory
+mv <dir_1> <dir_2> --> To move a directory
+----------------------------------------------------------------------------------------------------
+Echo --> Print
+
+echo "hello" --> To print hello on the terminal
+echo -e "hello \n how are you" --> To print with new line using \n
+----------------------------------------------------------------------------------------------------
+Redirect(>) and Append(>>)
+
+echo "hello" > <file_name> --> Redirect the output of echo command to the file
+echo "hello" >> <file_name> --> Append the new info to the existing file
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+20-01-2022 Class - 3
+----------------------------------------------------------------------------------------------------
+Word Count
+
+wc <file_name> --> The total number of lines, words and character present in the file
+
+wc -l <file_name> --> To check only the number of lines
+wc -w <file_name> --> To check only the number of words
+wc -c <file_name> --> To check only the number of characters
+----------------------------------------------------------------------------------------------------
+File size and Disk Size
+
+df -h --> To check the disk size of the system
+free -h --> To check the system memory (RAM)
+
+du -sh <file_name> --> To check the file size
+du -sh * --> To check the size of all files and directories in the pwd
+lsblk to ckeck disks
+lscpu to check cpu entire details
+nproc to see just number of cpus
+
+----------------------------------------------------------------------------------------------------
+Grep - Used to search for strings inside a file
+
+grep "<string>" <file_name> --> To display all the lines with the string
+grep -i "<string>" <file_name> --> To display all the lines with the string but case insensitive search
+
+grep -e "<string1>" -e "<string2>" <file_name> --> To search for multiple patterns
+
+grep -w "<string>" <file_name> --> To search for a whole word
+
+grep -l "<string>" * --> To check for the pattern in all the files and prints the filenames
+grep -l -R "<string>" --> To check for the pattern in all the files recursively and prints the filenames
+
+grep "^<string>" <file_name> --> TO print all the lines that start with the pattern
+grep "<string>$" <file_name> --> TO print all the lines that end with the pattern
+
+grep -c "<string>" <file_name> --> TO count the number of lines the pattern is present
+
+grep -v "<string>" <file_name> --> To display all the that does not have the pattern
+
+Assignment: Grep Flag to check all the files that does not have the pattern
+----------------------------------------------------------------------------------------------------
+SUDO --> Super User Does
+
+sudo gives permissions for users to execute commands as a root user
+
+sudo su --> To goto root user
+
+sudo <command> --> To execute a command when you get permission denied
+
+To give an user the sudo permission, User needs to be added to the sudoers file
+
+File location: /etc/sudoers
+
+<user_name>		ALL=(ALL)       NOPASSWD: ALL
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+21-01-2022 Class - 4
+----------------------------------------------------------------------------------------------------
+Add Users
+
+sudo useradd <user_name> --> To add a user to the server
+sudo passwd <user_name> --> To set a password for the user
+sudo userdel <user_name> --> to delete a user from the server
+
+To check all the users in the server
+
+getent passwd
+cat /etc/passwd
+----------------------------------------------------------------------------------------------------
+Add Groups
+
+sudo groupadd <group_name> --> To add a group to the server
+sudo groupdel <group_name> --> to delete a group from the server
+
+sudo usermod -aG <group_name> <user_name> --> To add an user to the group
+
+To check all the groups in the server
+
+getent group
+cat /etc/group
+----------------------------------------------------------------------------------------------------
+Permissions in Linux
+
+r - Read Permission
+w - Write Permission
+x - Execute Permission
+
+-rw-rw-r--
+
+rw- --> Owner of the file
+rw- --> Group to which the file belongs
+r-- --> Others
+
+r - 2^2 --> 4
+w - 2^1 --> 2
+x - 2^0 --> 1
+- --> 0
+
+rwx rwx rwx
+
+chmod 777 <file_name> --> To give rwx for owner, group and others
+chmod 766 <file_name> --> To give rwx for owner, rw for group and other
+
+chmod u+x <file_name> --> To give the owner execute permission
+chmod o-x <file_name> --> TO remove execute permission for others
+
+u --> owner
+g --> group
+o --> others 
+----------------------------------------------------------------------------------------------------
+Change ownership of files and directories
+
+chown <user_name> <file_name> --> To change the owner of the file
+chgrp <group_name> <file_name> --> To change the group to which the file belongs
+
+chown <user_name>:<group_name> <file_name> --> TO change the owner and the group
+----------------------------------------------------------------------------------------------------
+Default Permisssion in Linux:
+
+Files --> 666
+Directories --> 777
+
+umask 002 --> To change the default permissions of the files and directories to 664 and 775
+umask 022 --> To change the default permissions of the files and directories to 664 and 775
+
+/etc/profile --> To change the umask value permanently
+
+----------------------------------------------------------------------------------------------------
+head --> To print required starting number of lines
+
+head -n <file_name> --> To display the starting n lines
+head -3 <file_name> --> To display the starting 3 lines
+head <file_name> --> To display the starting 10 lines
+
+tail --> To print the required lines from the end
+
+tail -n <file_name> --> To display the last n lines
+tail -3 <file_name> --> To display the last 3 lines
+tail <file_name> --> To display the last 10 lines
+----------------------------------------------------------------------------------------------------
+Pipe [|] --> To pass the output of one command to the next command
+
+Example:
+head -4 <file_name> | tail -1 --> To display only the 4th line
+----------------------------------------------------------------------------------------------------
+Sed --> Stream Editor used to find and replace words
+
+sed 's/<old_string>/<new_string>/g' <file_name> --> To replace old string with the new string and
+display it on the terminal (It won't make changes to file)
+
+sed -i 's/<old_string>/<new_string>/g' <file_name> --> It will also make changes to the original file
+
+sed -i '1s/<old_string>/<new_string>/g' <file_name> --> It will make changes to the first line only
+sed -i '2,5s/<old_string>/<new_string>/g' <file_name> --> It will make changes from 2 to 5th line
+sed -i '4,$s/<old_string>/<new_string>/g' <file_name> --> It will make changes from 4 to end of file
+
+sed -i '4d' <file_name> --> Deletes the 4th line
+sed -i '3,5d' <file_name> --> Deletes the lines from 3 to 5
+sed -i '4,$d' <file_name> --> Deletes the lines from 4th to end of the file
+
+sed -n '2p' <file_name> --> To print the 2nd line only
+sed -n '2,4p' <file_name> --> To print the lines from 2 to 4
+sed -n '2,$p' <file_name> --> To print the lines from 2nd to end of the file
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+22-01-2022 Class - 6
+----------------------------------------------------------------------------------------------------
+Cut - Used to cut a file column wise
+
+cut -d " " -f1 <file_name> --> To display only the 1st column
+cut -d " " -f1,3 <file_name> --> To display the 1st and 3rd column
+cut -d " " -f2-5 <file_name> --> To display from 2 to 5th columns
+
+d --> Delimiter
+----------------------------------------------------------------------------------------------------
+awk '{print}' <file_name>  --> TO display the contents of the file
+
+awk -F " " '{print$2}' <file_name> --> To display only the 2nd column
+awk -F " " '{print$2,$3}' <file_name> --> To display the 2nd and 3rd column
+awk -F " " '{print$NF}' <file_name> --> To display the last column
+awk -F " " '{print$(NF-1)}' <file_name> --> To display only the 2nd last column
+
+awk 'NR==3 {print}' <file_name> --> To display the 3rd row
+----------------------------------------------------------------------------------------------------
+Find --> To find files and directories in Linux
+
+find -name <name> --> To search and display all the files and directories with the particular name
+find -iname <name> --> Case Insensitive search
+
+-type f --> To only search for files
+-type d --> To only search for directories
+
+find -mtime -10 --> To find and display all the files and directories created in the last 10 days
+find -mtime +10 --> To find and display all the files and directories created more than 10 days ago
+
+find -type f -perm 664 --> To search for all the files with the permission 664
+
+find -type f -empty --> To search for all the empty files 
+
+find -maxdepth 1 -name <name> --> To only search for the current directory
+----------------------------------------------------------------------------------------------------
+Link --> To create a shortcut for a file in linux
+
+ln -s <original_file_path> <softlink_name> --> To create a soft link
+ln <original_file_path> <hardlink_name> --> To create a hard link
+
+A softlink will point to the path of the original file and once the file gets deleted/moved
+The softlink will not work
+
+A hardlink even after the original file gets deleted/moved The hardlink will still work
+
+Reason: Hardlink points directly to the inode of the file
+
+inode --> Is the unique identification number of file which points to the file's memory block
+
+ls -i <file_name> --> TO check the inode of a file
+----------------------------------------------------------------------------------------------------
+Miscellaneous
+
+who --> To check all the users that are logged in to the server
+whoami --> To check the current user
+
+hostname --> To check the ip address of the system (Private)
+curl ifconfig.me --> To display the public ip address
+
+uname --> To check OS and details
+uname -a --> To check all the details of the system
+----------------------------------------------------------------------------------------------------
+tee - Redirect and Append
+
+ls -l | tee <file_name> --> To write the output of a command to a file and display the contents on the terminal
+
+ls -l | tee -a <file_name> --> For Append
+----------------------------------------------------------------------------------------------------
+Assignment:
+
+1. Find all the non empty files
+2. Find all the files with size more than 1 MB
+3. Find and delete all the empty files
+----------------------------------------------------------------------------------------------------
+Assignment:
+
+Install Apache Tomcat Application By Tuesday
+
+Requirements:
+1. Java
+
+sudo yum install <package_name>
+
+sudo yum install java
+sudo yum install wget
+----------------------------------------------------------------------------------------------------
+SSH - Secure Shell or Secure Socket Shell
+
+SSH is a network protocol that enables users to access a server in a secure way over an unsecured network
+
+Defualt Port:
+
+SSH --> 22
+Apache Tomcat --> 8080
+Jenkins --> 8080
+HTTP --> 80
+HTTPS --> 443
+
+Port: A port is a virtual point where network connections start and end
+
+ssh <key> <username>@<ipadress> --> To SSH into a server
+
+Example 
+
+ssh -i <PEM_File> ec2-user@<ipadress> --> To SSH into a server using PEM file
+
+SSH Passwordless Connection
+
+ssh-keygen -t rsa --> To generate a rsa key pair (Public and Private Key)
+
+id_rsa --> Private Key
+id_rsa.pub --> Public Key
+
+Copy the contents of the Public Key (id_rsa) to the authorized_keys file under .ssh folder 
+of the server that you want to establish password less connection. 
+Passwordless connection will be established
+----------------------------------------------------------------------------------------------------
+winscp --> To transfer Files
+----------------------------------------------------------------------------------------------------
+scp - To copy files over ssh
+
+scp <file_path> <user_name>@<ipadress>:<destination_path> --> To copy a file over ssh to another server
+
+scp -i <pem_file> <file_path> <user_name>@<ipadress>:<destination_path> --> Without passwordless connection
+
+rsync --> With rsync in case of any failures rsync will resume where the copy has stopped
+----------------------------------------------------------------------------------------------------
+Process (ps)
+
+ps -ef --> To show all the running process on the server
+
+ps -u <user_name> --> To check all the process started by a particular user
+
+kill/kilall --> To forcefully stop a process
+
+kill -9 <PID> --> To kill a process by PID
+killall -9 <process_name> --> To kill a process by its name
+killall -9 -u <username> --> To kill all the process started by an user
+
+sudo service <process_name> stop --> Gracefully stop a process
+example:
+
+sudo service docker stop --> To stop docker service
+
+top --> To check all the process in an interactive view
+----------------------------------------------------------------------------------------------------
+Assignment --> Load Average in Linux
+----------------------------------------------------------------------------------------------------
+ping <hostname> --> To check and ping another server
+ping www.google.com
+
+ping 0 --> To ping current server
+----------------------------------------------------------------------------------------------------
+bashrc and bashprofile
+
+These files execute everytime automatically as the session starts
+
+Assignment: Find the difference between bashrc and bashprofile
+
+We could setup environment variables and Alias for commands in these files
+
+example
+
+alias FED="find -type f -empty | xargs rm -rf"
+
+bash_history --> Stores all the commands that were executed on the server
+----------------------------------------------------------------------------------------------------
+uniq and sort
+
+uniq <file_name> --> To display only the unique values in a file
+
+Drawback --> uniq command only works if the same values are adjacent to each other
+
+sort <file_name> --> To sort the values in a file
+sort -r <file_name> --> To sort in reverse order
+
+sort <filename> | uniq --> To sort and eliminate all the duplicate values
+----------------------------------------------------------------------------------------------------
+netsat --> To check the information about ports in the linux server
+
+netstat -a --> To check all the ports
+netstat -l --> To check all that are in use
+
+sudo netstat -tulnp --> To check which is using which port 
+----------------------------------------------------------------------------------------------------
+& --> To run a command or a script in background
+
+Syntax: command/script &
+
+fg <PID/command/script> --> To bing the process/command/script to the foreground
+----------------------------------------------------------------------------------------------------
+Telnet:
+
+Default port: 23
+
+Telenet is a networking protocol which is used to create a remote connection. The data being transferred
+using this protocol is unencrypted
+
+Syntax: telnet <hostname> <portnumber>
+----------------------------------------------------------------------------------------------------
+
+
+
