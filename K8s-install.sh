@@ -12,33 +12,7 @@ echo "Disabling swap..."
 sudo swapoff -a
 sudo sed -i '/ swap / s/^/#/' /etc/fstab
 
-# Step 2: Update the /etc/hosts File for Hostname Resolution
-echo "Updating /etc/hosts for hostname resolution..."
-cat <<EOF | sudo tee -a /etc/hosts
-# Add your nodes' IP addresses and hostnames here
-10.128.0.24   master-node
-10.128.0.24   worker-node
-EOF
 
-# Step 3: Set up the IPV4 bridge on all nodes
-echo "Setting up IPV4 bridge..."
-# Load kernel modules
-cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
-overlay
-br_netfilter
-EOF
-sudo modprobe overlay
-sudo modprobe br_netfilter
-
-# Configure sysctl parameters
-cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
-net.bridge.bridge-nf-call-iptables  = 1
-net.bridge.bridge-nf-call-ip6tables = 1
-net.ipv4.ip_forward                 = 1
-EOF
-
-# Apply sysctl parameters without reboot
-sudo sysctl --system
 
 # Step 4: Install Docker
 echo "Installing Docker..."
