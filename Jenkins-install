@@ -1,0 +1,42 @@
+Step-by-step (Ubuntu 20.04/22.04/24.04 on EC2)
+
+1.Connect & update
+
+sudo apt-get update -y && sudo apt-get install -y ca-certificates curl gnupg lsb-release
+
+
+2.(Recommended) Ensure time sync
+
+sudo apt-get install -y chrony
+sudo systemctl enable --now chrony || sudo systemctl enable --now chronyd
+
+
+3.Install Java 17 (required by current Jenkins LTS)
+
+sudo apt-get install -y openjdk-17-jre
+java -version   # should show version "17"
+
+
+4.Add the official Jenkins repository
+
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee /etc/apt/keyrings/jenkins-keyring.asc >/dev/null
+echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list >/dev/null
+sudo apt-get update -y
+
+
+5.Install Jenkins
+
+sudo apt-get install -y fontconfig jenkins
+
+
+6.Start & enable on boot
+
+sudo systemctl enable --now jenkins
+sudo systemctl status jenkins --no-pager
+
+7.Grab the initial admin password & open Jenkins
+
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+9.Open: http://<EC2-PUBLIC-IP>:8080 → paste the password → “Install suggested plugins” → create admin user.
